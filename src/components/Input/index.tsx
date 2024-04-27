@@ -4,21 +4,22 @@ import {
   FieldErrors,
   UseFormRegister,
   UseFormRegisterReturn,
+  useFormContext,
 } from "react-hook-form";
 import { IBaseInfoField, IForm } from "../../types";
 interface IIntpuProps {
   register: UseFormRegister<any>;
-  errors: FieldError | undefined;
   lable: string;
   id: string;
-  nameRegister: keyof IBaseInfoField;
+  nameRegister: keyof IForm;
+  errors: FieldErrors<IForm>;
 }
 export const Input: FC<IIntpuProps> = ({
   register,
-  errors,
   lable,
   id,
   nameRegister,
+  errors,
 }) => {
   useEffect(() => {
     console.log(errors);
@@ -28,7 +29,7 @@ export const Input: FC<IIntpuProps> = ({
       <label htmlFor={id}>{lable}</label>
       <input
         type="text"
-        {...register(nameRegister, {
+        {...register(`${nameRegister}.${lable}`, {
           required: "Почта обязательна",
           validate: (val) => {
             if (
@@ -42,7 +43,7 @@ export const Input: FC<IIntpuProps> = ({
           },
         })}
       />
-      {errors && <span>{errors.message}</span>}
+      {errors && <span>{errors["email"]?.message as unknown as string}</span>}
     </>
   );
 };

@@ -1,10 +1,10 @@
-enum Busyness {
+export enum Busyness {
   Full = "Полная",
   Partial = "Частичная",
   Project = "Проектная",
   Internship = "Стажировка",
 }
-enum WorkSchedule {
+export enum WorkSchedule {
   FullDay = "Полный день",
   FlexSchedule = "Гибкий график",
   ShifrSchedule = "Сменный график",
@@ -19,14 +19,14 @@ enum Education {
 export interface IBaseInfoField {
   name: string;
   lastName: string;
-  patronymic: string | undefined;
+  patronymic?: string;
   phone: string;
   email: string;
   post: string;
-  desiredSalary: string | undefined;
-  workSchedule: WorkSchedule | undefined;
-  isBusinnesTrips: boolean | undefined;
-  busyness: Busyness | undefined;
+  desiredSalary?: string;
+  workSchedule?: WorkSchedule;
+  isBusinnesTrips?: boolean;
+  busyness?: Busyness;
 }
 export interface IPersonalInfo {
   citizenship: string | undefined;
