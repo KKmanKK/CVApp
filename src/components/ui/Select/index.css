@@ -1,0 +1,8 @@
+.custom-select__control {
+  border: 1px solid black !important;
+  color: black !important;
+}
+.custom-select__menu {
+  border: 1px solid black !important;
+  color: black !important;
+}

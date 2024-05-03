@@ -1,11 +1,11 @@
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Busyness, IBaseInfoField, IOption, WorkSchedule } from "../../types";
 import { Input } from "../ui/Input";
 import { schema } from "../../schema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import styled from "styled-components";
 import { Select } from "../ui/Select";
-const Form = styled.div({
+const Form = styled.form({
   width: "500px",
   border: "1px solid black",
   borderRadius: "5px",
@@ -23,7 +23,7 @@ const InputWrapp = styled.div({
   gridTemplateColumns: "1fr 1fr",
   gap: "20px",
   rowGap: "15px",
-  alignItems: "end",
+  alignItems: "top",
 });
 const optionBusy: IOption[] = [
   { value: Busyness.Full, label: Busyness.Full },
@@ -38,6 +38,20 @@ const optionWorkSchedule: IOption[] = [
   { value: WorkSchedule.RemoteWork, label: WorkSchedule.RemoteWork },
   { value: WorkSchedule.ShiftMethod, label: WorkSchedule.ShiftMethod },
 ];
+const optionisBusinnes: IOption[] = [
+  { value: "Готов", label: "Готов" },
+  { value: "Не готов", label: "Не готов" },
+];
+const getValue = (
+  options: IOption[],
+  value: Busyness | WorkSchedule | boolean | undefined
+) => {
+  debugger;
+  // console.log( options[0] is IOption );
+
+  return value ? options.find((option) => option.value == value) : "";
+};
+
 export const BaseInfoForm = () => {
   const {
     register,
@@ -48,8 +62,10 @@ export const BaseInfoForm = () => {
     resolver: yupResolver(schema),
   });
   const onSubmit: SubmitHandler<IBaseInfoField> = (data) => {
+    debugger;
     console.log(data);
   };
+  console.log(errors);
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       <Title>Основная информация</Title>
@@ -61,6 +77,7 @@ export const BaseInfoForm = () => {
         errorsMess={errors.name?.message}
         ref={register("name").ref}
         onChange={register("name").onChange}
+        placeholder="имя"
       />
       <Input
         lable="Фамилия *"
@@ -70,6 +87,7 @@ export const BaseInfoForm = () => {
         errorsMess={errors.lastName?.message}
         ref={register("lastName").ref}
         onChange={register("lastName").onChange}
+        placeholder="фамилию"
       />
       <InputWrapp>
         <Input
@@ -80,6 +98,7 @@ export const BaseInfoForm = () => {
           errorsMess={errors.phone?.message}
           ref={register("phone").ref}
           onChange={register("phone").onChange}
+          placeholder="телефон"
         />
         <Input
           lable="Почта *"
@@ -89,6 +108,7 @@ export const BaseInfoForm = () => {
           errorsMess={errors.email?.message}
           ref={register("email").ref}
           onChange={register("email").onChange}
+          placeholder="почту"
         />
       </InputWrapp>
       <Input
@@ -99,6 +119,7 @@ export const BaseInfoForm = () => {
         errorsMess={errors.post?.message}
         ref={register("post").ref}
         onChange={register("post").onChange}
+        placeholder="должность"
       />
       <InputWrapp>
         <Input
@@ -109,18 +130,45 @@ export const BaseInfoForm = () => {
           errorsMess={errors.desiredSalary?.message}
           ref={register("desiredSalary").ref}
           onChange={register("desiredSalary").onChange}
+          placeholder="желаемую зарплату"
+          type="number"
         />
-        <Select placeholder="График работы" options={optionBusy} />
-        <Input
-          lable="Готовность к командировкам"
-          name={register("isBusinnesTrips").name}
-          id="isBusinnesTrips"
-          error={!!errors.isBusinnesTrips}
-          errorsMess={errors.isBusinnesTrips?.message}
-          ref={register("isBusinnesTrips").ref}
-          onChange={register("isBusinnesTrips").onChange}
+        <Controller
+          control={control}
+          name="workSchedule"
+          render={({ field: { onChange, value }, fieldState: { error } }) => (
+            <Select
+              onChange={(newValue) => onChange((newValue as IOption).value)}
+              label="График работы"
+              value={getValue(optionWorkSchedule, value)}
+              options={optionWorkSchedule}
+            />
+          )}
         />
-        <Select placeholder="Занятость" options={optionWorkSchedule} />
+        <Controller
+          control={control}
+          name="isBusinnesTrips"
+          render={({ field: { onChange, value }, fieldState: { error } }) => (
+            <Select
+              onChange={(newValue) => onChange((newValue as IOption).value)}
+              label="Готовность к командировкам"
+              value={getValue(optionisBusinnes, value)}
+              options={optionisBusinnes}
+            />
+          )}
+        />
+        <Controller
+          control={control}
+          name="busyness"
+          render={({ field: { onChange, value }, fieldState: { error } }) => (
+            <Select
+              onChange={(newValue) => onChange((newValue as IOption).value)}
+              label="Занятость"
+              value={getValue(optionBusy, value)}
+              options={optionBusy}
+            />
+          )}
+        />
       </InputWrapp>
       <Input
         lable="Вставить фото"
@@ -131,7 +179,9 @@ export const BaseInfoForm = () => {
         ref={register("busyness").ref}
         onChange={register("busyness").onChange}
         type="file"
+        placeholder=""
       />
+      <button type="submit">Отправить</button>
     </Form>
   );
 };

@@ -1,6 +1,5 @@
 import { FC, forwardRef, useEffect } from "react";
 import { ChangeHandler } from "react-hook-form";
-import { IBaseInfoField, IForm } from "../../../types";
 import styled from "styled-components";
 interface IIntpuProps {
   lable?: string;
@@ -10,24 +9,31 @@ interface IIntpuProps {
   errorsMess?: string;
   type?: string;
   onChange: ChangeHandler;
+  placeholder: string;
 }
 
 const Wrapper = styled.div({
   display: "flex",
   gap: "5px",
   flexDirection: "column",
+  position: "relative",
 });
 const CustomInput = styled.input({
-  background: "",
+  padding: "8px",
+  border: "1px solid black",
+  borderRadius: "5px",
 });
 const CustomLable = styled.label({
   background: "",
 });
-const Error = styled.div({
-  background: "",
+const Error = styled.span({
+  color: "red",
 });
 export const Input = forwardRef<HTMLInputElement, IIntpuProps>(
-  ({ lable, id, errorsMess, error, name, onChange, type }, ref) => {
+  (
+    { lable, id, errorsMess, error, name, onChange, type, placeholder },
+    ref
+  ) => {
     return (
       <Wrapper>
         <CustomLable htmlFor={id}>{lable}</CustomLable>
@@ -35,6 +41,7 @@ export const Input = forwardRef<HTMLInputElement, IIntpuProps>(
           type={type ? type : "text"}
           name={name}
           ref={ref}
+          placeholder={`Введите ${placeholder}`}
           onChange={onChange}
         />
         {error && <Error>{errorsMess}</Error>}

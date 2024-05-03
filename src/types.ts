@@ -16,7 +16,7 @@ export enum WorkSchedule {
   RemoteWork = "Удалённая работа",
   ShiftMethod = "Вахтовый метод",
 }
-enum Education {
+export enum Education {
   Higher = "",
   Secondary = "Среднее",
   SecondarySpecial = "Среднее специальное",
@@ -28,7 +28,7 @@ export interface IBaseInfoField {
   phone: string;
   email: string;
   post: string;
-  desiredSalary?: string;
+  desiredSalary?: number;
   workSchedule?: WorkSchedule;
   isBusinnesTrips?: boolean;
   busyness?: Busyness;

@@ -33,7 +33,13 @@ export const schema = yup.object().shape({
     .required("Обязательное поле")
     .min(2, "Необходимо минимум 2 символа"),
   patronymic: yup.string().trim().optional(),
-  desiredSalary: yup.string().trim().optional(),
+  desiredSalary: yup.number()
+    .min(10000, "Необходимый минимум 10000 рублей")
+    .positive("Необходимо только положительное значение")
+    .integer("Число должно быть целым")
+    .transform((value) => Number.isNaN(value) ? undefined : value)
+    .typeError("Введите число")
+    .optional(),
   workSchedule: yup.string<WorkSchedule>().optional(),
   isBusinnesTrips: yup.boolean().optional(),
   busyness: yup.string<Busyness>().optional(),
