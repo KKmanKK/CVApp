@@ -1,3 +1,8 @@
+export interface IOption {
+  value: string;
+  label: string;
+}
+
 export enum Busyness {
   Full = "Полная",
   Partial = "Частичная",
