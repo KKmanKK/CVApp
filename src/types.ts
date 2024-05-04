@@ -1,5 +1,5 @@
 export interface IOption {
-  value: string;
+  value: string | boolean;
   label: string;
 }
 
@@ -32,6 +32,7 @@ export interface IBaseInfoField {
   workSchedule?: WorkSchedule;
   isBusinnesTrips?: boolean;
   busyness?: Busyness;
+  file?: FileList;
 }
 export interface IPersonalInfo {
   citizenship: string | undefined;

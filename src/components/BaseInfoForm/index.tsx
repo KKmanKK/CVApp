@@ -39,16 +39,16 @@ const optionWorkSchedule: IOption[] = [
   { value: WorkSchedule.ShiftMethod, label: WorkSchedule.ShiftMethod },
 ];
 const optionisBusinnes: IOption[] = [
-  { value: "Готов", label: "Готов" },
-  { value: "Не готов", label: "Не готов" },
+  { value: true, label: "Готов" },
+  { value: false, label: "Не готов" },
 ];
 const getValue = (
   options: IOption[],
   value: Busyness | WorkSchedule | boolean | undefined
 ) => {
-  debugger;
-  // console.log( options[0] is IOption );
-
+  if (value === false) {
+    return options.find((option) => option.value == value);
+  }
   return value ? options.find((option) => option.value == value) : "";
 };
 
@@ -62,8 +62,11 @@ export const BaseInfoForm = () => {
     resolver: yupResolver(schema),
   });
   const onSubmit: SubmitHandler<IBaseInfoField> = (data) => {
-    debugger;
-    console.log(data);
+    if (!data.file) {
+      return;
+    }
+    let file = new Blob([data.file[0]], { type: data.file[0].type });
+    console.log(URL.createObjectURL(file));
   };
   console.log(errors);
   return (
@@ -172,12 +175,12 @@ export const BaseInfoForm = () => {
       </InputWrapp>
       <Input
         lable="Вставить фото"
-        name={register("busyness").name}
-        id="busyness"
-        error={!!errors.busyness}
-        errorsMess={errors.busyness?.message}
-        ref={register("busyness").ref}
-        onChange={register("busyness").onChange}
+        name={register("file").name}
+        id="file"
+        error={!!errors.file}
+        errorsMess={errors.file?.message}
+        ref={register("file").ref}
+        onChange={register("file").onChange}
         type="file"
         placeholder=""
       />
