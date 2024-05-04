@@ -5,6 +5,7 @@ import { schema } from "../../schema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import styled from "styled-components";
 import { Select } from "../ui/Select";
+import { useData } from "../../context/ContextData";
 const Form = styled.form({
   width: "500px",
   border: "1px solid black",
@@ -61,14 +62,11 @@ export const BaseInfoForm = () => {
   } = useForm<IBaseInfoField>({
     resolver: yupResolver(schema),
   });
-  const onSubmit: SubmitHandler<IBaseInfoField> = (data) => {
-    if (!data.file) {
-      return;
-    }
-    let file = new Blob([data.file[0]], { type: data.file[0].type });
-    console.log(URL.createObjectURL(file));
+  const { data, saveData } = useData();
+  const onSubmit: SubmitHandler<IBaseInfoField> = (dataForm) => {
+    saveData(dataForm);
   };
-  console.log(errors);
+  console.log(data);
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       <Title>Основная информация</Title>

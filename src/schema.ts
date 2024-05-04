@@ -35,13 +35,23 @@ export const schema = yup.object().shape({
   patronymic: yup.string().trim().optional(),
   desiredSalary: yup
     .number()
-    .min(10000, "Необходимый минимум 10000 рублей")
-    .positive("Необходимо только положительное значение")
     .integer("Число должно быть целым")
+    .min(10000, "Необходимый минимум 10000 рублей")
     .transform((value) => (Number.isNaN(value) ? undefined : value))
     .typeError("Введите число")
     .optional(),
   workSchedule: yup.string<WorkSchedule>().optional(),
   isBusinnesTrips: yup.boolean().optional(),
   busyness: yup.string<Busyness>().optional(),
+  file: yup.mixed((input): input is FileList => input instanceof FileList).test({
+    message: "Файлы должны иметь расширение png или jpg",
+    test: (file, context) => {
+      if (!file) {
+        return false;
+      }
+      const isValid = ["png", "jpg", "jpeg"].includes(file[0].type.split("/")[1])
+      if (!isValid) context?.createError();
+      return isValid;
+    }
+  }).optional()
 });

@@ -24,4 +24,4 @@ export const AppProvider: FC<{ children: React.ReactNode }> = ({
   );
 };
 
-export const useData = () => useContext(AppContext);
+export const useData = () => useContext(AppContext) as AppContextData;
